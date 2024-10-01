@@ -5,5 +5,9 @@ prepare:
     2: mandatory
     3: other
   nc: 4
-  train: /data/raw/train_images.txt
-  test: /data/raw/test_images.txt
+  train: train_images.txt
+  test: test_images.txt
+  test_size: 0.2
+  random_state: 42
+train:
+  random_state: 42
