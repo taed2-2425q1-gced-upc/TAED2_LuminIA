@@ -1,6 +1,17 @@
 stages:
   prepare:
-    cmd: '" -p" prepare.names,prepare.nc,prepare.train,prepare.test,prepare.test_size,prepare.random_state
-      " -d" src/features/prepare.py " -d" data/raw/train.txt " -d" data/raw/test.txt
-      " -o" data/processed/train/train.txt " -o" data/processed/test/test.txt " python"
-      -m prepare'
+    cmd: python -m scripts.prepare
+    deps:
+    - data/raw/test.txt
+    - data/raw/train.txt
+    - scripts/prepare.py
+    params:
+    - prepare.names
+    - prepare.nc
+    - prepare.random_state
+    - prepare.test
+    - prepare.test_size
+    - prepare.train
+    outs:
+    - data/processed/test_images.txt
+    - data/processed/train_images.txt
