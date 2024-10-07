@@ -1,10 +1,10 @@
 stages:
   prepare:
-    cmd: python -m scripts.prepare
+    cmd: python -m src.features.prepare
     deps:
     - data/raw/test.txt
     - data/raw/train.txt
-    - scripts/prepare.py
+    - src/features/prepare.py
     params:
     - prepare.names
     - prepare.nc
@@ -15,3 +15,24 @@ stages:
     outs:
     - data/processed/test_images.txt
     - data/processed/train_images.txt
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - src/models/train.py
+    - data/processed/train_images.txt
+    params:
+    - train.epochs
+    - train.batch_size
+    - train.learning_rate
+    outs:
+    - models/trained_model.pkl
+
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+    - data/processed/test_images.txt
+    - models/trained_model.pkl
+    - src/models/evaluate.py
+    metrics:
+    - metrics/train_metrics.json:
+        cache: false
