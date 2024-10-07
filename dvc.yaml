@@ -15,3 +15,25 @@ stages:
     outs:
     - data/processed/test_images.txt
     - data/processed/train_images.txt
+  train:
+    cmd: python -m scripts.train
+    deps:
+    - scripts/train.py
+    - data/processed/train_images.txt
+    - models/yolov3_ts_train.cfg
+    params:
+    - train.epochs
+    - train.batch_size
+    - train.learning_rate
+    outs:
+    - models/trained_model.pt
+
+  evaluate:
+    cmd: python -m scripts.evaluate
+    deps:
+    - data/processed/test_images.txt
+    - models/trained_model.pt
+    - scripts/evaluate.py
+    metrics:
+    - metrics/train_metrics.json:
+        cache: false
