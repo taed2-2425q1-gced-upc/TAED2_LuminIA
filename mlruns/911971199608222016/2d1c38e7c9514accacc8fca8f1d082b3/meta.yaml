@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/2d1c38e7c9514accacc8fca8f1d082b3/artifacts
+end_time: 1728401145057
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 2d1c38e7c9514accacc8fca8f1d082b3
+run_name: unleashed-pug-412
+run_uuid: 2d1c38e7c9514accacc8fca8f1d082b3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728401142581
+status: 4
+tags: []
+user_id: evajimenez

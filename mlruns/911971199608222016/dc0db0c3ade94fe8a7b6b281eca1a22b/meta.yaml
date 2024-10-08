@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/dc0db0c3ade94fe8a7b6b281eca1a22b/artifacts
+end_time: 1728400705180
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: dc0db0c3ade94fe8a7b6b281eca1a22b
+run_name: painted-steed-987
+run_uuid: dc0db0c3ade94fe8a7b6b281eca1a22b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728400702438
+status: 4
+tags: []
+user_id: evajimenez

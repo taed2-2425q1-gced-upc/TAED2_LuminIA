@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/182eed36e31d4d509aa813b370829f07/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 182eed36e31d4d509aa813b370829f07
+run_name: gaudy-moth-541
+run_uuid: 182eed36e31d4d509aa813b370829f07
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728403936751
+status: 1
+tags: []
+user_id: evajimenez

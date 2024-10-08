@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/e0ffbf89eb544bfbb20c9dc4222d10fb/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: e0ffbf89eb544bfbb20c9dc4222d10fb
+run_name: glamorous-calf-866
+run_uuid: e0ffbf89eb544bfbb20c9dc4222d10fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728405632593
+status: 1
+tags: []
+user_id: evajimenez
