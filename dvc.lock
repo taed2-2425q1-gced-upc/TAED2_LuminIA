@@ -13,10 +13,15 @@ stages:
       md5: 75aac26b1dca432e2ad276e935e5502c
       size: 14490
       isexec: true
+    - path: data/raw/ts
+      hash: md5
+      md5: 55ade20560b7c10c1dabdec1370cb124.dir
+      size: 262905209
+      nfiles: 1482
     - path: src/features/prepare.py
       hash: md5
-      md5: 30ff7eeb579823dfe55c9661ae2c4aef
-      size: 1170
+      md5: 582065b90f9b450e1d17b76b97a6156a
+      size: 1221
       isexec: true
     params:
       params.yaml:
@@ -33,11 +38,59 @@ stages:
     outs:
     - path: data/processed/test_images.txt
       hash: md5
-      md5: b5bf6f59f91fb0337d1e5cedb90ea91b
-      size: 3278
+      md5: 395af9f39794c551844f5bc44fcc6ed9
+      size: 132
       isexec: true
     - path: data/processed/train_images.txt
       hash: md5
-      md5: 99c0cbe897f8d29e32e3fec46bd75877
-      size: 13024
+      md5: ef1a7a074fe39b8601cf5770fd7d76fe
+      size: 506
+      isexec: true
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - path: data/processed/train_images.txt
+      hash: md5
+      md5: ef1a7a074fe39b8601cf5770fd7d76fe
+      size: 506
+      isexec: true
+    - path: src/models/train.py
+      hash: md5
+      md5: b0e39ad7daf1b2ac4f6a919ec8df20af
+      size: 3737
+      isexec: true
+    params:
+      params.yaml:
+        train.batch_size: 16
+        train.epochs: 1
+        train.learning_rate: 0.001
+    outs:
+    - path: models/ts_model.pt
+      hash: md5
+      md5: d2ae38a4ee27aef2d8980a9320ace393
+      size: 46757975
+      isexec: true
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+    - path: data/processed/test_images.txt
+      hash: md5
+      md5: 395af9f39794c551844f5bc44fcc6ed9
+      size: 132
+      isexec: true
+    - path: models/ts_model.pt
+      hash: md5
+      md5: d2ae38a4ee27aef2d8980a9320ace393
+      size: 46757975
+      isexec: true
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: 6d72f9ca8dc214939b3f176920a430bf
+      size: 2757
+      isexec: true
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: c5df249b107f24b203e00f5ba52f2bb9
+      size: 86
       isexec: true

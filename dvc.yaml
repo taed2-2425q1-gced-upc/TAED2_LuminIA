@@ -26,14 +26,14 @@ stages:
     - train.batch_size
     - train.learning_rate
     outs:
-    - models/trained_model.pt
+    - models/ts_model.pt
 
   evaluate:
     cmd: python -m src.models.evaluate
     deps:
     - data/processed/test_images.txt
-    - models/trained_model.pt
+    - models/ts_model.pt
     - src/models/evaluate.py
     metrics:
-    - metrics/train_metrics.json:
+    - metrics/scores.json:
         cache: false
