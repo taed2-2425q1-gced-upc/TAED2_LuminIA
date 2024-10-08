@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/9eccbab5011143a18f5b31cc0936aea1/artifacts
+end_time: 1728376930955
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 9eccbab5011143a18f5b31cc0936aea1
+run_name: rebellious-panda-580
+run_uuid: 9eccbab5011143a18f5b31cc0936aea1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728376924220
+status: 4
+tags: []
+user_id: ramon

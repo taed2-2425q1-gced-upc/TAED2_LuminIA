@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/70a265af9b414197a594f6e368908cfa/artifacts
+end_time: 1728369608586
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 70a265af9b414197a594f6e368908cfa
+run_name: fortunate-mink-441
+run_uuid: 70a265af9b414197a594f6e368908cfa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728369603158
+status: 4
+tags: []
+user_id: alumne

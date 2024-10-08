@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/23e68a48c2d7449297b5903a951ab142/artifacts
+end_time: 1728370159856
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 23e68a48c2d7449297b5903a951ab142
+run_name: stately-rook-127
+run_uuid: 23e68a48c2d7449297b5903a951ab142
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728370153742
+status: 4
+tags: []
+user_id: alumne

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/2ea2d80299e346919512c56ab57adc0e/artifacts
+end_time: 1728375226708
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 2ea2d80299e346919512c56ab57adc0e
+run_name: aged-hog-255
+run_uuid: 2ea2d80299e346919512c56ab57adc0e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728375219919
+status: 4
+tags: []
+user_id: ramon

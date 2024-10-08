@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/56ea25d6db2b4cdc9757e75a3d36028a/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 56ea25d6db2b4cdc9757e75a3d36028a
+run_name: clean-grub-50
+run_uuid: 56ea25d6db2b4cdc9757e75a3d36028a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728377653787
+status: 1
+tags: []
+user_id: ramon

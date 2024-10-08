@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/18c694cfb37a4bf797ca1e8d35b679c1/artifacts
+end_time: 1728370864676
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 18c694cfb37a4bf797ca1e8d35b679c1
+run_name: loud-dolphin-175
+run_uuid: 18c694cfb37a4bf797ca1e8d35b679c1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728370859288
+status: 4
+tags: []
+user_id: alumne

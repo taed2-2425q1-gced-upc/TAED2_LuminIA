@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/f059f2572ccb4b3d8a5412cb7df58cf9/artifacts
+end_time: 1728376514460
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: f059f2572ccb4b3d8a5412cb7df58cf9
+run_name: casual-mink-407
+run_uuid: f059f2572ccb4b3d8a5412cb7df58cf9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728376514451
+status: 4
+tags: []
+user_id: ramon

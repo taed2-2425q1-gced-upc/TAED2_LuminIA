@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/0f80e83f67eb4dfd8779eb66a277cc5e/artifacts
+end_time: 1728376653551
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 0f80e83f67eb4dfd8779eb66a277cc5e
+run_name: adaptable-newt-271
+run_uuid: 0f80e83f67eb4dfd8779eb66a277cc5e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728376646847
+status: 4
+tags: []
+user_id: ramon

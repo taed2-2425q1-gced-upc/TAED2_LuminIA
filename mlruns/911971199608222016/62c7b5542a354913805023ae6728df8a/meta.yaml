@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/62c7b5542a354913805023ae6728df8a/artifacts
+end_time: 1728371330043
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 62c7b5542a354913805023ae6728df8a
+run_name: skillful-toad-715
+run_uuid: 62c7b5542a354913805023ae6728df8a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728371323830
+status: 4
+tags: []
+user_id: alumne

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/179f1e77f01d4a098da889e71c07b38c/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 179f1e77f01d4a098da889e71c07b38c
+run_name: treasured-tern-191
+run_uuid: 179f1e77f01d4a098da889e71c07b38c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728378411828
+status: 1
+tags: []
+user_id: ramon

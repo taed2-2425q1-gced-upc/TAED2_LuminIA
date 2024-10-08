@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/ea82da05eb43477896f1e1da2cd3c199/artifacts
+end_time: 1728337885923
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: ea82da05eb43477896f1e1da2cd3c199
+run_name: delicate-grouse-438
+run_uuid: ea82da05eb43477896f1e1da2cd3c199
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728337885911
+status: 4
+tags: []
+user_id: alumne

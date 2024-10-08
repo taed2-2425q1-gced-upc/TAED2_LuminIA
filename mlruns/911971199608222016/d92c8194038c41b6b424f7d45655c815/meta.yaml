@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/d92c8194038c41b6b424f7d45655c815/artifacts
+end_time: 1728376102967
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: d92c8194038c41b6b424f7d45655c815
+run_name: abundant-toad-889
+run_uuid: d92c8194038c41b6b424f7d45655c815
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728376096245
+status: 4
+tags: []
+user_id: ramon

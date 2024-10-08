@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/f41f3747b03d440a9d11ed41d927be42/artifacts
+end_time: 1728371854948
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: f41f3747b03d440a9d11ed41d927be42
+run_name: incongruous-stag-922
+run_uuid: f41f3747b03d440a9d11ed41d927be42
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728371849515
+status: 4
+tags: []
+user_id: alumne

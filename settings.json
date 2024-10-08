@@ -1,0 +1,20 @@
+{
+  "settings_version": "0.0.6",
+  "datasets_dir": "/home/ramon/Desktop/GCED/TAED2_LuminIA/data",
+  "weights_dir": "weights",
+  "runs_dir": "runs",
+  "uuid": "c3106bf1a7d38686f6aaecdaad674e5c14585e70bdb15af03a92b040be3cddc3",
+  "sync": true,
+  "api_key": "",
+  "openai_api_key": "",
+  "clearml": true,
+  "comet": true,
+  "dvc": true,
+  "hub": true,
+  "mlflow": true,
+  "neptune": true,
+  "raytune": true,
+  "tensorboard": true,
+  "wandb": true,
+  "vscode_msg": true
+}

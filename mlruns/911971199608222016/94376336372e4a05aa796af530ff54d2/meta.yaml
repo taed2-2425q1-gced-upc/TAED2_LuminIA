@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/94376336372e4a05aa796af530ff54d2/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 94376336372e4a05aa796af530ff54d2
+run_name: intelligent-goat-489
+run_uuid: 94376336372e4a05aa796af530ff54d2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728378781887
+status: 1
+tags: []
+user_id: ramon

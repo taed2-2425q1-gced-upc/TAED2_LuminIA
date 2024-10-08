@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/d89158eb310b415a82c1718fa4c2ecbc/artifacts
+end_time: 1728338059197
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: d89158eb310b415a82c1718fa4c2ecbc
+run_name: nimble-mole-500
+run_uuid: d89158eb310b415a82c1718fa4c2ecbc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728338052647
+status: 4
+tags: []
+user_id: alumne

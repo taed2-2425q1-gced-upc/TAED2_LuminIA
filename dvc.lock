@@ -1,23 +1,20 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: python -m scripts.prepare
+    cmd: python -m src.features.prepare
     deps:
     - path: data/raw/test.txt
       hash: md5
       md5: 5db14e473329aa4bce970376afb90bac
       size: 2553
-      isexec: true
     - path: data/raw/train.txt
       hash: md5
       md5: 75aac26b1dca432e2ad276e935e5502c
       size: 14490
-      isexec: true
-    - path: scripts/prepare.py
+    - path: src/features/prepare.py
       hash: md5
-      md5: cd0e2aa734e6d6151ce5606ef7e5088c
-      size: 1171
-      isexec: true
+      md5: 30ff7eeb579823dfe55c9661ae2c4aef
+      size: 1170
     params:
       params.yaml:
         prepare.names:
@@ -33,11 +30,9 @@ stages:
     outs:
     - path: data/processed/test_images.txt
       hash: md5
-      md5: b5bf6f59f91fb0337d1e5cedb90ea91b
+      md5: 89d619b0fe6d636b7d2a0d229951a82b
       size: 3278
-      isexec: true
     - path: data/processed/train_images.txt
       hash: md5
-      md5: 99c0cbe897f8d29e32e3fec46bd75877
+      md5: 69b45f5c4ae813e4ede5eb5f1ab7b649
       size: 13024
-      isexec: true

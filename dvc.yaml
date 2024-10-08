@@ -1,10 +1,10 @@
 stages:
   prepare:
-    cmd: python -m scripts.prepare
+    cmd: python -m src.features.prepare
     deps:
     - data/raw/test.txt
     - data/raw/train.txt
-    - scripts/prepare.py
+    - src/features/prepare.py
     params:
     - prepare.names
     - prepare.nc
@@ -16,24 +16,23 @@ stages:
     - data/processed/test_images.txt
     - data/processed/train_images.txt
   train:
-    cmd: python -m scripts.train
+    cmd: python -m src.models.train
     deps:
-    - scripts/train.py
+    - src/models/train.py
     - data/processed/train_images.txt
-    - models/yolov3_ts_train.cfg
     params:
     - train.epochs
     - train.batch_size
     - train.learning_rate
     outs:
-    - models/trained_model.pt
+    - models/trained_model.pkl
 
   evaluate:
-    cmd: python -m scripts.evaluate
+    cmd: python -m src.models.evaluate
     deps:
     - data/processed/test_images.txt
-    - models/trained_model.pt
-    - scripts/evaluate.py
+    - models/trained_model.pkl
+    - src/models/evaluate.py
     metrics:
     - metrics/train_metrics.json:
         cache: false
