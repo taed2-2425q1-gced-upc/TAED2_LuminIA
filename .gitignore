@@ -1,7 +1,6 @@
 # Data
 /data/
-!data/raw/train.txt
-!data/raw/test.txt
+!data/*.dvc
 
 # Mac OS-specific storage files
 .DS_Store
