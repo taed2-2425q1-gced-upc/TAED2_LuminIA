@@ -44,8 +44,8 @@ with mlflow.start_run():
 
     # Create the data dictionary using data lists and data preparation parameters
     data = {
-        'train': "/home/ramon/Desktop/GCED/TAED2_LuminIA/data/processed/train_images.txt", #prepare_params["train"],
-        'val': "/home/ramon/Desktop/GCED/TAED2_LuminIA/data/processed/test_images.txt", #prepare_params["test"],
+        'train': "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/train_images.txt", #prepare_params["train"],
+        'val': "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/test_images.txt", #prepare_params["test"],
         'nc': nc,
         'names': {i: name for i, name in enumerate(class_names)} 
     }
@@ -94,5 +94,5 @@ with mlflow.start_run():
     # Save the model as a pickle file
     Path(MODELS_DIR).mkdir(exist_ok=True)
 
-    with open(MODELS_DIR / "ts_model.pkl", "wb") as pickle_file:
+    with open(MODELS_DIR / "ts_model.pt", "wb") as pickle_file:
         pickle.dump(ts_model, pickle_file)
