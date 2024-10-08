@@ -10,7 +10,22 @@ import json
 import shutil
 import torch 
 
-from src.config import METRICS_DIR, MODELS_DIR, PROCESSED_DATA_DIR, DATA_DIR
+from src.config import PROJ_ROOT, METRICS_DIR, MODELS_DIR, PROCESSED_DATA_DIR, DATA_DIR
+
+import json
+
+
+file_path = 'settings.json'
+# Variable con el nuevo valor para 'datasets_dir'
+nuevo_datasets_dir = str(PROJ_ROOT)
+# Leer el archivo JSON
+with open(file_path, 'r') as file:
+    data = json.load(file)
+# Modificar el valor de 'datasets_dir'
+data['datasets_dir'] = nuevo_datasets_dir
+with open(file_path, 'w') as file:
+    json.dump(data, file, indent=4)
+print("El archivo JSON ha sido actualizado.")
 
 
 mlflow.set_experiment("traffic-signs")
@@ -37,10 +52,8 @@ with mlflow.start_run():
 
     # Create the data dictionary using data lists and data preparation parameters
     data = {
-        'train': "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/train_images.txt", #prepare_params["train"],
-        'val': "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/test_images.txt",
-        # 'train': str(TRAIN_IMAGES_PATH), 
-        # 'val': str(TEST_IMAGES_PATH), 
+        'train': str(TRAIN_IMAGES_PATH), 
+        'val': str(TEST_IMAGES_PATH), 
         'nc': nc,
         'names': {i: name for i, name in enumerate(class_names)} 
     }

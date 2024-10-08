@@ -56,8 +56,8 @@ stages:
       isexec: true
     - path: src/models/train.py
       hash: md5
-      md5: b0e39ad7daf1b2ac4f6a919ec8df20af
-      size: 3737
+      md5: a47425e18655a24087c9d5c289622a9a
+      size: 3885
       isexec: true
     params:
       params.yaml:
@@ -67,7 +67,7 @@ stages:
     outs:
     - path: models/ts_model.pt
       hash: md5
-      md5: d2ae38a4ee27aef2d8980a9320ace393
+      md5: 62620edd7695c7487239ef6200e8920e
       size: 46757975
       isexec: true
   evaluate:
@@ -80,13 +80,13 @@ stages:
       isexec: true
     - path: models/ts_model.pt
       hash: md5
-      md5: d2ae38a4ee27aef2d8980a9320ace393
+      md5: 62620edd7695c7487239ef6200e8920e
       size: 46757975
       isexec: true
     - path: src/models/evaluate.py
       hash: md5
-      md5: 6d72f9ca8dc214939b3f176920a430bf
-      size: 2757
+      md5: f24db5b2488a60ae4921b02f65185beb
+      size: 2557
       isexec: true
     outs:
     - path: metrics/scores.json

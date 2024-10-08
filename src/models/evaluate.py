@@ -6,13 +6,13 @@ import yaml
 import json
 from ultralytics import YOLO
 
-from src.config import METRICS_DIR, PROCESSED_DATA_DIR
+from src.config import METRICS_DIR, PROCESSED_DATA_DIR, MODELS_DIR
 
 # DATA LOADING
 # Path to the models folder
 MODELS_FOLDER_PATH = Path("models")
-TRAIN_IMAGES_PATH = "data/processed/train_images.txt"
-TEST_IMAGES_PATH = "data/processed/test_images.txt"
+TRAIN_IMAGES_PATH = PROCESSED_DATA_DIR / "train_images.txt"
+TEST_IMAGES_PATH = PROCESSED_DATA_DIR / "test_images.txt"
 
 params_path = Path("params.yaml")
 
@@ -33,8 +33,8 @@ nc = prepare_params["nc"]
 
 # Create the data dictionary using data lists and data preparation parameters
 data = {
-    'train': "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/train_images.txt", #prepare_params["train"],
-    'val': "//mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/test_images.txt", #prepare_params["test"],
+    'train': str(TRAIN_IMAGES_PATH), 
+    'val': str(TEST_IMAGES_PATH), 
     'nc': nc,
     'names': {i: name for i, name in enumerate(class_names)} 
 }
@@ -60,7 +60,7 @@ with mlflow.start_run():
     random.seed(prepare_params["random_state"])  
 
     # Load the model
-    ts_model = YOLO(MODELS_FOLDER_PATH / "ts_model.pt")
+    ts_model = YOLO(MODELS_DIR / "ts_model.pt")
 
     # Perform validation and save the evaluation metrics in runs directory
     metrics = ts_model.val(data=yaml_file)
