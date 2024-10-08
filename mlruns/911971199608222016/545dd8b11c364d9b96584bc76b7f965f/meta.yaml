@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/545dd8b11c364d9b96584bc76b7f965f/artifacts
+end_time: 1728370215366
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 545dd8b11c364d9b96584bc76b7f965f
+run_name: stately-lynx-503
+run_uuid: 545dd8b11c364d9b96584bc76b7f965f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728370209948
+status: 4
+tags: []
+user_id: alumne

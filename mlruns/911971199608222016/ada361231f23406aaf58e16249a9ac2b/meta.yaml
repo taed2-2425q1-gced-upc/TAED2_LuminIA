@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/ada361231f23406aaf58e16249a9ac2b/artifacts
+end_time: 1728370499474
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: ada361231f23406aaf58e16249a9ac2b
+run_name: resilient-shoat-410
+run_uuid: ada361231f23406aaf58e16249a9ac2b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728370493210
+status: 4
+tags: []
+user_id: alumne

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/00ad0a6fcd6d41fb8e863eb0f8b90310/artifacts
+end_time: 1728371356486
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 00ad0a6fcd6d41fb8e863eb0f8b90310
+run_name: funny-moth-332
+run_uuid: 00ad0a6fcd6d41fb8e863eb0f8b90310
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728371351160
+status: 4
+tags: []
+user_id: alumne

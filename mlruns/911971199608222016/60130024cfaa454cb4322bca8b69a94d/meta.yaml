@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/60130024cfaa454cb4322bca8b69a94d/artifacts
+end_time: 1728372017021
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 60130024cfaa454cb4322bca8b69a94d
+run_name: bustling-midge-432
+run_uuid: 60130024cfaa454cb4322bca8b69a94d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728372010463
+status: 4
+tags: []
+user_id: alumne

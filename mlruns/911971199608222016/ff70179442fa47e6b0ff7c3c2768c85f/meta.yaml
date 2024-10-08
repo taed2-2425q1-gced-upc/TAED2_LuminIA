@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/ff70179442fa47e6b0ff7c3c2768c85f/artifacts
+end_time: 1728337989791
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: ff70179442fa47e6b0ff7c3c2768c85f
+run_name: resilient-snail-981
+run_uuid: ff70179442fa47e6b0ff7c3c2768c85f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728337984775
+status: 4
+tags: []
+user_id: alumne

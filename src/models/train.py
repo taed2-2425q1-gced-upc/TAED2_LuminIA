@@ -25,9 +25,13 @@ with mlflow.start_run():
 
     # Read and load training and validation dataset
     def load_image_paths(file_path):
+        base_path = Path("/home/alumne/TAED2_LuminIA/")
+
         """Load image paths from a text file."""
         with open(file_path, 'r') as f:
-            image_paths = f.read().splitlines()
+            image_names = f.read().splitlines()
+        image_paths = [str(base_path / img) for img in image_names]
+        
         return image_paths
 
     train_images = load_image_paths(TRAIN_IMAGES_PATH)
@@ -43,6 +47,9 @@ with mlflow.start_run():
             print(exc)
 
     # Read class names and number of classes from prepare parameters
+    print("prepare_params['names']:", prepare_params["names"])
+    print("Type of prepare_params['names']:", type(prepare_params["names"]))
+
     class_names = list(prepare_params["names"].values())
     nc = prepare_params["nc"]
 
@@ -51,7 +58,7 @@ with mlflow.start_run():
         'train': train_images,
         'val': test_images,
         'nc': nc,
-        'names': {i: name for i, name in enumerate(class_names.values())}
+        'names': {i: name for i, name in enumerate(class_names)} 
     }
 
     # Write the dictionary to a YAML file if needed (for the YOLO model)
@@ -84,8 +91,9 @@ with mlflow.start_run():
         # Then fit the model to the training data
         ts_model.train(data=yaml_file, 
                        epochs=train_params["epochs"], 
-                       batch_size=train_params["batch_size"], 
-                       learning_rate=train_params["learning_rate"])
+                       #batch_size=train_params["batch_size"], 
+                       #learning_rate=train_params["learning_rate"]
+                       )
 
     # Log the CO2 emissions to MLflow
     emissions = pd.read_csv(emissions_output_folder / "emissions.csv")

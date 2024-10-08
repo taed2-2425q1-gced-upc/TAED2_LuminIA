@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/fd0206a2c2a74ebba7b117aa194f27cf/artifacts
+end_time: 1728337720581
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: fd0206a2c2a74ebba7b117aa194f27cf
+run_name: sincere-goose-788
+run_uuid: fd0206a2c2a74ebba7b117aa194f27cf
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728337720569
+status: 4
+tags: []
+user_id: alumne
