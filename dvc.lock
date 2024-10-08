@@ -7,14 +7,22 @@ stages:
       hash: md5
       md5: 5db14e473329aa4bce970376afb90bac
       size: 2553
+      isexec: true
     - path: data/raw/train.txt
       hash: md5
       md5: 75aac26b1dca432e2ad276e935e5502c
       size: 14490
+      isexec: true
+    - path: data/raw/ts
+      hash: md5
+      md5: 55ade20560b7c10c1dabdec1370cb124.dir
+      size: 262905209
+      nfiles: 1482
     - path: src/features/prepare.py
       hash: md5
-      md5: 30ff7eeb579823dfe55c9661ae2c4aef
-      size: 1170
+      md5: 582065b90f9b450e1d17b76b97a6156a
+      size: 1221
+      isexec: true
     params:
       params.yaml:
         prepare.names:
@@ -30,9 +38,59 @@ stages:
     outs:
     - path: data/processed/test_images.txt
       hash: md5
-      md5: 89d619b0fe6d636b7d2a0d229951a82b
-      size: 3278
+      md5: 395af9f39794c551844f5bc44fcc6ed9
+      size: 132
+      isexec: true
     - path: data/processed/train_images.txt
       hash: md5
-      md5: 69b45f5c4ae813e4ede5eb5f1ab7b649
-      size: 13024
+      md5: ef1a7a074fe39b8601cf5770fd7d76fe
+      size: 506
+      isexec: true
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - path: data/processed/train_images.txt
+      hash: md5
+      md5: ef1a7a074fe39b8601cf5770fd7d76fe
+      size: 506
+      isexec: true
+    - path: src/models/train.py
+      hash: md5
+      md5: a47425e18655a24087c9d5c289622a9a
+      size: 3885
+      isexec: true
+    params:
+      params.yaml:
+        train.batch_size: 16
+        train.epochs: 1
+        train.learning_rate: 0.001
+    outs:
+    - path: models/ts_model.pt
+      hash: md5
+      md5: 62620edd7695c7487239ef6200e8920e
+      size: 46757975
+      isexec: true
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+    - path: data/processed/test_images.txt
+      hash: md5
+      md5: 395af9f39794c551844f5bc44fcc6ed9
+      size: 132
+      isexec: true
+    - path: models/ts_model.pt
+      hash: md5
+      md5: 62620edd7695c7487239ef6200e8920e
+      size: 46757975
+      isexec: true
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: f24db5b2488a60ae4921b02f65185beb
+      size: 2557
+      isexec: true
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: c5df249b107f24b203e00f5ba52f2bb9
+      size: 86
+      isexec: true
