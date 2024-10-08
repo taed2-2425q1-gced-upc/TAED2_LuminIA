@@ -1,13 +1,15 @@
+"""Docstring"""
+
 import os
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 import yaml
-from pathlib import Path
 
 #Path from the parameters file
 params_path = Path("params.yaml")
 
 #Read data preparation parameters
-with open(params_path, "r") as params_file:
+with open(params_path, "r", encoding="utf-8") as params_file:
     try:
         params = yaml.safe_load(params_file)
         params = params["prepare"]
@@ -26,13 +28,14 @@ test_image_list = output_directory / params["test"]
 image_files = [f for f in os.listdir(raw_data_dir) if f.endswith('.jpg')]
 
 # Split into training and validation sets
-train_files, test_files = train_test_split(image_files, test_size=params["test_size"], random_state=params["random_state"])
+train_files, test_files = train_test_split(image_files,
+                            test_size=params["test_size"], random_state=params["random_state"])
 
 # Write the split file lists to disk
-with open(train_image_list, 'w') as f:
+with open(train_image_list, 'w', encoding="utf-8") as f:
     for item in train_files:
-        f.write("%s\n" % os.path.join(raw_data_dir, item))
+        f.write(f"{os.path.join(raw_data_dir, item)}\n")
 
-with open(test_image_list, 'w') as f:
+with open(test_image_list, 'w', encoding="utf-8") as f:
     for item in test_files:
-        f.write("%s\n" % os.path.join(raw_data_dir, item))
+        f.write(f"{os.path.join(raw_data_dir, item)}\n")
