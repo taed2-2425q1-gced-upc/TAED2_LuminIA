@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/3aa83af71bf34f8d9fc3237cbfcd30ab/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 3aa83af71bf34f8d9fc3237cbfcd30ab
+run_name: nervous-penguin-431
+run_uuid: 3aa83af71bf34f8d9fc3237cbfcd30ab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728406648394
+status: 1
+tags: []
+user_id: evajimenez

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/289b796fb3bf45be9c529fa2e6cb9c0e/artifacts
+end_time: 1728402043466
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 289b796fb3bf45be9c529fa2e6cb9c0e
+run_name: capricious-roo-428
+run_uuid: 289b796fb3bf45be9c529fa2e6cb9c0e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728402043415
+status: 4
+tags: []
+user_id: evajimenez

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/bb5676731a44441585a0441184ec4f31/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: bb5676731a44441585a0441184ec4f31
+run_name: dazzling-mule-3
+run_uuid: bb5676731a44441585a0441184ec4f31
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728401198113
+status: 1
+tags: []
+user_id: evajimenez

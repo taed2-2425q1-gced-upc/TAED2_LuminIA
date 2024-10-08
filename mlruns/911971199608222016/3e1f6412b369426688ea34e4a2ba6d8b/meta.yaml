@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/3e1f6412b369426688ea34e4a2ba6d8b/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 3e1f6412b369426688ea34e4a2ba6d8b
+run_name: wise-panda-659
+run_uuid: 3e1f6412b369426688ea34e4a2ba6d8b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728402083716
+status: 1
+tags: []
+user_id: evajimenez

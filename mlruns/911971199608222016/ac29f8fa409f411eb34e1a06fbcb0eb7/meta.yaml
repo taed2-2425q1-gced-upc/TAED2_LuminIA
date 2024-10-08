@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/ac29f8fa409f411eb34e1a06fbcb0eb7/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: ac29f8fa409f411eb34e1a06fbcb0eb7
+run_name: bedecked-quail-37
+run_uuid: ac29f8fa409f411eb34e1a06fbcb0eb7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728402817936
+status: 1
+tags: []
+user_id: evajimenez

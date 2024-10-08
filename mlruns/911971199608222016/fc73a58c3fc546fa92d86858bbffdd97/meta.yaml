@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/fc73a58c3fc546fa92d86858bbffdd97/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: fc73a58c3fc546fa92d86858bbffdd97
+run_name: honorable-fly-709
+run_uuid: fc73a58c3fc546fa92d86858bbffdd97
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728404434900
+status: 1
+tags: []
+user_id: evajimenez
