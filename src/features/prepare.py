@@ -24,6 +24,7 @@ test_image_list = output_directory / params["test"]
 
 # Get list of all image files
 image_files = [f for f in os.listdir(raw_data_dir) if f.endswith('.jpg')]
+#image_files = image_files[:len(image_files) // 25]
 
 # Split into training and validation sets
 train_files, test_files = train_test_split(image_files, test_size=params["test_size"], random_state=params["random_state"])
