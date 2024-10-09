@@ -1,4 +1,15 @@
-"""Docstring"""
+"""
+This module prepares data for machine learning training.
+
+It performs the following tasks:
+1. Reads configuration parameters from a YAML file (`params.yaml`).
+2. Defines input and output directories for image data.
+3. Lists image files and splits them into training and test sets.
+4. Writes the split file lists to disk.
+
+Exceptions:
+- Handles `YAMLError` when reading parameters and prints an error message.
+"""
 
 import os
 from pathlib import Path
