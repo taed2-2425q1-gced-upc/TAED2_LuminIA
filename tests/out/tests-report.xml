@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.406" timestamp="2024-10-19T12:41:14.775980+02:00" hostname="LAPTOP-CLT0VDF8"><testcase classname="" name="tests.test_models" time="0.000"><error message="collection failure">..\.venv\lib\site-packages\_pytest\python.py:493: in importtestmodule
+    mod = import_path(
+..\.venv\lib\site-packages\_pytest\pathlib.py:582: in import_path
+    importlib.import_module(module_name)
+..\..\..\..\AppData\Local\Programs\Python\Python310\lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+&lt;frozen importlib._bootstrap&gt;:1050: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1027: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1006: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:688: in _load_unlocked
+    ???
+..\.venv\lib\site-packages\_pytest\assertion\rewrite.py:175: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+..\.venv\lib\site-packages\_pytest\assertion\rewrite.py:355: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+..\..\..\..\AppData\Local\Programs\Python\Python310\lib\ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "C:\Users\laia2\Desktop\TAED2\TAED2_LuminIA\tests\test_models.py", line 148
+E       """
+E       ^^^^^^^^^^^^^^^
+E   SyntaxError: invalid syntax. Perhaps you forgot a comma?</error></testcase></testsuite></testsuites>

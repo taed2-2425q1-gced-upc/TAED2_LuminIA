@@ -5,19 +5,21 @@ stages:
     deps:
     - path: data/raw/test.txt
       hash: md5
-      md5: 5db14e473329aa4bce970376afb90bac
-      size: 2553
-      isexec: true
+      md5: 16a0f3f4b04ddb191babc93b92528be1
+      size: 2997
     - path: data/raw/train.txt
       hash: md5
-      md5: 75aac26b1dca432e2ad276e935e5502c
-      size: 14490
-      isexec: true
+      md5: 657add54a75ae2239b27c381947b03bf
+      size: 17010
+    - path: data/raw/ts
+      hash: md5
+      md5: 55ade20560b7c10c1dabdec1370cb124.dir
+      size: 262905209
+      nfiles: 1482
     - path: src/features/prepare.py
       hash: md5
-      md5: 30ff7eeb579823dfe55c9661ae2c4aef
-      size: 1170
-      isexec: true
+      md5: 40441702efa969beea24b9299911ad53
+      size: 1667
     params:
       params.yaml:
         prepare.names:
@@ -33,11 +35,9 @@ stages:
     outs:
     - path: data/processed/test_images.txt
       hash: md5
-      md5: b5bf6f59f91fb0337d1e5cedb90ea91b
-      size: 3278
-      isexec: true
+      md5: 7af19988e203d1cd708cbdc1b614092f
+      size: 3427
     - path: data/processed/train_images.txt
       hash: md5
-      md5: 99c0cbe897f8d29e32e3fec46bd75877
-      size: 13024
-      isexec: true
+      md5: 18f9e993e7c6ade87849ec3e3909f9a2
+      size: 13616
