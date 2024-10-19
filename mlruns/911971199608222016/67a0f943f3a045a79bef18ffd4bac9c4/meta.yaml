@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/67a0f943f3a045a79bef18ffd4bac9c4/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 67a0f943f3a045a79bef18ffd4bac9c4
+run_name: calm-wasp-402
+run_uuid: 67a0f943f3a045a79bef18ffd4bac9c4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728379169952
+status: 1
+tags: []
+user_id: alumne

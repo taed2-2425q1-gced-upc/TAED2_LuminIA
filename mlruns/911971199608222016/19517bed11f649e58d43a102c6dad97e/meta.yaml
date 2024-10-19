@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alumne/TAED2_LuminIA/mlruns/911971199608222016/19517bed11f649e58d43a102c6dad97e/artifacts
+end_time: 1728380848416
+entry_point_name: ''
+experiment_id: '911971199608222016'
+lifecycle_stage: active
+run_id: 19517bed11f649e58d43a102c6dad97e
+run_name: blushing-penguin-836
+run_uuid: 19517bed11f649e58d43a102c6dad97e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728380842991
+status: 4
+tags: []
+user_id: alumne
