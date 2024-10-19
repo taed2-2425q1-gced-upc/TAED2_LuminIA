@@ -1,5 +1,5 @@
 """Main script: it includes our API initialization and endpoints."""
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,  FileResponse
 import logging
 import torch
 from ultralytics.nn.tasks import DetectionModel
@@ -13,6 +13,7 @@ from codecarbon import track_emissions
 from fastapi import File, FastAPI, HTTPException, UploadFile
 import numpy as np
 from pathlib import Path
+import os
 
 from src.config import METRICS_DIR, MODELS_DIR
 
@@ -31,7 +32,7 @@ async def lifespan(app: FastAPI):
 
     model_paths = [
         filename
-        for filename in Path("models").iterdir()  # Ajusta esto si usas un config para MODELS_DIR
+        for filename in Path("models").iterdir()  
         if filename.suffix == ".pt" and filename.stem.startswith("ts_model")
     ]
 
@@ -118,34 +119,43 @@ async def _predict_image(file: UploadFile = File(...)):
     try:
         # Leer la imagen cargada
         image_stream = await file.read()
-        
+
         # Convertir la imagen cargada a formato PIL
         image = Image.open(io.BytesIO(image_stream))
-        
+
+        # Convertir la imagen PIL a un array de NumPy (YOLOv8 acepta rutas o arrays de NumPy)
+        image_np = np.array(image)
+
+        # Guardar temporalmente la imagen en el disco
+        temp_image_path = "temp_image.jpg"
+        image.save(temp_image_path)
+
         # Obtener el modelo YOLO desde el diccionario cargado previamente
         model = model_wrappers_dict["image"].get("detection", None)
 
         if model is None:
             raise HTTPException(status_code=500, detail="Modelo no cargado")
-        
-        # Realizar la predicción usando el modelo YOLO
-        results = model.predict(source=image, save=False, conf=0.25)  # Puedes ajustar el umbral de confianza
-        
-        # Preparar las predicciones en un formato legible
-        predictions = []
-        for result in results:  # Si hay múltiples resultados (varias imágenes)
-            for box in result.boxes.data:  # Acceder a las cajas delimitadoras
-                predictions.append({
-                    "class": result.names[int(box[5])],  # Clase detectada
-                    "confidence": float(box[4]),        # Confianza
-                    "bbox": box[:4].tolist()             # Coordenadas de la caja [xmin, ymin, xmax, ymax]
-                })
 
-        return JSONResponse(content={
-            "message": "Predictorn Successful!",
-            "predictions": predictions
-        })
+        # Crear un directorio para guardar los resultados si no existe
+        save_dir = Path("runs/detect/predict")
+        save_dir.mkdir(parents=True, exist_ok=True)
+
+        # Realizar la predicción usando el modelo YOLO y guardar las imágenes procesadas
+        results = model.predict(source=temp_image_path, save=True, conf=0.25, project=str(save_dir), name="image")  
+        
+        # Recuperar la ruta de la imagen procesada
+        processed_image_path = save_dir / "image" / "temp_image.jpg"  # Por defecto, YOLO guarda las imágenes como 'image0.jpg', 'image1.jpg', etc.
+        
+        if not processed_image_path.exists():
+            raise HTTPException(status_code=500, detail="Imagen procesada no encontrada")
+
+        # Devolver la imagen procesada como una respuesta para descargar
+        return FileResponse(str(processed_image_path), media_type="image/jpeg", filename="temp_image.jpg")
 
     except Exception as e:
         logging.error(f"Error al realizar la predicción: {e}")
         raise HTTPException(status_code=500, detail="Error al realizar la predicción")
+    finally:
+        # Eliminar la imagen temporal después de la predicción
+        if os.path.exists(temp_image_path):
+            os.remove(temp_image_path)
