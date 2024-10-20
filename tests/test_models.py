@@ -19,6 +19,16 @@ def yolo_model():
     model = YOLO(WEIGHTS_PATH)
     return model
 
+def test_model_loading(yolo_model):
+    """Test to verify that the YOLO model loads correctly and applies weights."""
+    assert yolo_model is not None, "Model did not load correctly"
+    
+    # Simulate inference with a dummy input tensor
+    dummy_input = torch.randn(1, 3, 416, 416)  # Dummy image of size 416x416
+    output = yolo_model(dummy_input)
+
+    assert output is not None, "Model output is None"
+    assert len(output) > 0, "Model output is empty"
 
 @pytest.fixture
 def yolo_validation_data():
@@ -46,17 +56,6 @@ def test_load_config():
     assert 'batch' in config['net'], "The 'net' section must contain 'batch' parameter"
     assert 'subdivisions' in config['net'], "The 'net' section must contain 'subdivisions' parameter"
 
-
-def test_model_loading(yolo_model):
-    """Test to verify that the YOLO model loads correctly and applies weights."""
-    assert yolo_model is not None, "Model did not load correctly"
-    
-    # Simulate inference with a dummy input tensor
-    dummy_input = torch.randn(1, 3, 416, 416)  # Dummy image of size 416x416
-    output = yolo_model(dummy_input)
-
-    assert output is not None, "Model output is None"
-    assert len(output) > 0, "Model output is empty"
 
 
 def test_load_image():
@@ -118,28 +117,31 @@ def test_yolo_output_structure(yolo_model, yolo_validation_data):
 
 
 def test_yolo_class_prediction(yolo_model, yolo_validation_data):
-    """Test to verify YOLO model predicts the correct class for a reduced set of images."""
+    """Test to verify YOLO model predicts the correct classes for images with multiple objects."""
     for img_path in yolo_validation_data[1]:  # Usar los paths de la fixture
         input_image = load_image(img_path)
         predictions = yolo_model.predict(input_image)
 
+        # Extraer todas las clases predichas de las cajas (bounding boxes)
         predicted_classes = []
         for pred in predictions:
             if hasattr(pred, 'boxes'):
                 for box in pred.boxes:
                     predicted_classes.append(box.cls.item())
 
+        # Leer las clases esperadas desde el archivo correspondiente
         expected_output_path = img_path.replace(".jpg", ".txt")
-
         if os.path.exists(expected_output_path):
             with open(expected_output_path, 'r') as file:
                 expected_output = file.read().strip()
 
-                expected_values = expected_output.split()
-                expected_class = float(expected_values[0])
+                # Obtener todas las clases esperadas del archivo (suponiendo que el archivo tiene una clase por línea)
+                expected_classes = [float(line.split()[0]) for line in expected_output.splitlines()]
 
                 print(f"Image: {img_path}")
-                print(f"Expected Class: {expected_class}")
+                print(f"Expected Classes: {expected_classes}")
                 print(f"Predicted Classes: {predicted_classes}")
 
-                assert expected_class in predicted_classes, f"Expected class {expected_class} was not predicted."
+                # Verificar que todas las clases esperadas estén en las clases predichas
+                for expected_class in expected_classes:
+                    assert expected_class in predicted_classes, f"Expected class {expected_class} was not predicted."
