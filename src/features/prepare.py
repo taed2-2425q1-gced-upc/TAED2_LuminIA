@@ -1,39 +1,60 @@
 import os
 from sklearn.model_selection import train_test_split
 import yaml
-from pathlib import Path
+from src.config.config import (
+    PARAMS_PATH,
+    PROCESSED_DATA_DIR,
+    RAW_DATA_DIR_TS,
+)
 
-#Path from the parameters file
-params_path = Path("params.yaml")
+def load_parameters():
+    """Load parameters from the global PARAMS_PATH."""
+    with open(PARAMS_PATH, "r") as params_file:  # Usa PARAMS_PATH directamente
+        try:
+            params = yaml.safe_load(params_file)
+            return params.get("prepare", {})
+        except yaml.YAMLError as exc:
+            print(exc)
+            return {}
 
-#Read data preparation parameters
-with open(params_path, "r") as params_file:
-    try:
-        params = yaml.safe_load(params_file)
-        params = params["prepare"]
-    except yaml.YAMLError as exc:
-        print(exc)
 
-# Define paths
-raw_data_dir = Path('data/raw/ts')
-output_directory = Path('data/processed')
+def get_image_files():
+    """Get a list of image files from the raw data directory."""
+    return [f for f in os.listdir(RAW_DATA_DIR_TS) if f.endswith('.jpg')]
 
-#Define output files
-train_image_list = output_directory / params["train"]
-test_image_list = output_directory / params["test"]
 
-# Get list of all image files
-image_files = [f for f in os.listdir(raw_data_dir) if f.endswith('.jpg')]
-#image_files = image_files[:len(image_files) // 25]
+def split_data(image_files, params):
+    """Split the dataset into training and testing sets."""
+    train_files, test_files = train_test_split(image_files, test_size=params["test_size"], random_state=params["random_state"])
+    return train_files, test_files
 
-# Split into training and validation sets
-train_files, test_files = train_test_split(image_files, test_size=params["test_size"], random_state=params["random_state"])
+def write_file_list(file_list, output_path):
+    """Write a list of file paths to a specified output file with a base directory prefix."""
+    with open(output_path, 'w') as f:
+        for item in file_list:
+            # Concatenar la ruta base con el nombre del archivo
+            full_path = f"{RAW_DATA_DIR_TS}/{item}"
+            f.write("%s\n" % full_path)
+            
 
-# Write the split file lists to disk
-with open(train_image_list, 'w') as f:
-    for item in train_files:
-        f.write("%s\n" % os.path.join(raw_data_dir, item))
+def prepare_data():
+    """Main function to prepare the data."""
+    # Load parameters
+    params = load_parameters()
 
-with open(test_image_list, 'w') as f:
-    for item in test_files:
-        f.write("%s\n" % os.path.join(raw_data_dir, item))
+    # Get list of all image files
+    image_files = get_image_files()
+
+    # Split into training and validation sets
+    train_files, test_files = split_data(image_files, params)
+
+    # Define output files
+    train_image_list = PROCESSED_DATA_DIR / params["train"]
+    test_image_list = PROCESSED_DATA_DIR / params["test"]
+
+    # Write the split file lists to disk
+    write_file_list(train_files, train_image_list)
+    write_file_list(test_files, test_image_list)
+
+if __name__ == "__main__":
+    prepare_data()

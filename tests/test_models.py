@@ -4,18 +4,29 @@ import torch
 from ultralytics import YOLO
 from src.utils import load_config, load_image
 from PIL import Image
+from src.config.config import (
+    PROJ_ROOT,
+    CONFIG_PATH,
+    DATA_DIR,
+    RAW_DATA_DIR,
+    INTERIM_DATA_DIR,
+    PROCESSED_DATA_DIR,
+    EXTERNAL_DATA_DIR,
+    METRICS_DIR,
+    MODELS_DIR,
+    REPORTS_DIR,
+    FIGURES_DIR,
+    PARAMS_PATH,
+    WEIGHTS_PATH,
+    RAW_DATA_DIR_TS,
+)
+from pathlib import Path
 
-
-# Model configuration path
-CONFIG_PATH = 'models/yolov3_ts_train.cfg'
-# Path to the model weights file
-WEIGHTS_PATH = 'models/best.pt'
 
 
 @pytest.fixture
 def yolo_model():
-    """Fixture to load the YOLO model."""
-    WEIGHTS_PATH = 'C:/Users/laia2/Desktop/TAED2/TAED2_LuminIA/models/best.pt'  # Cambia a la ruta correcta
+    
     model = YOLO(WEIGHTS_PATH)
     return model
 
@@ -34,9 +45,9 @@ def test_model_loading(yolo_model):
 def yolo_validation_data():
     """Fixture to load a specific set of images for validation."""
     image_paths = [
-        "data/raw/ts/00426.jpg",
-        "data/raw/ts/00317.jpg",
-        "data/raw/ts/00624.jpg"
+        RAW_DATA_DIR_TS / "00426.jpg",
+        RAW_DATA_DIR_TS / "00317.jpg",
+        RAW_DATA_DIR_TS / "00624.jpg"
     ]
     
     images = [load_image(path) for path in image_paths]
@@ -60,7 +71,7 @@ def test_load_config():
 
 def test_load_image():
     """Test to verify that images load correctly."""
-    valid_image_path = "data/raw/ts/00426.jpg"  # Usar una de las imágenes válidas
+    valid_image_path = RAW_DATA_DIR_TS / "00426.jpg"  # Usar una de las imágenes válidas
     invalid_image_path = os.path.join('models', 'invalid_image.txt')
 
     try:
@@ -72,6 +83,9 @@ def test_load_image():
     with pytest.raises(IOError):
         load_image(invalid_image_path)  # Attempt to load an invalid image
 
+
+from pathlib import Path
+import os
 
 def compare_predictions_with_expected(yolo_model, image_path):
     """Compare model predictions with expected labels."""
@@ -88,9 +102,10 @@ def compare_predictions_with_expected(yolo_model, image_path):
                     'Coordinates': box.xyxy[0].tolist() if len(box.xyxy) > 0 else []
                 })
 
-    expected_output_path = image_path.replace(".jpg", ".txt")
+    # Cambiar la extensión de .jpg a .txt usando with_suffix
+    expected_output_path = Path(image_path).with_suffix(".txt")  # Cambia .jpg a .txt
 
-    if os.path.exists(expected_output_path):
+    if expected_output_path.exists():
         with open(expected_output_path, 'r') as file:
             expected_output = file.read().strip()
 
@@ -109,12 +124,10 @@ def compare_predictions_with_expected(yolo_model, image_path):
     else:
         print(f"No ground truth label found for {image_path}.")
 
-
 def test_yolo_output_structure(yolo_model, yolo_validation_data):
     """Test to verify the structure of YOLO predictions against expected labels."""
     for img_path in yolo_validation_data[1]:  # Usar los paths de la fixture
         compare_predictions_with_expected(yolo_model, img_path)
-
 
 def test_yolo_class_prediction(yolo_model, yolo_validation_data):
     """Test to verify YOLO model predicts the correct classes for images with multiple objects."""
@@ -129,13 +142,14 @@ def test_yolo_class_prediction(yolo_model, yolo_validation_data):
                 for box in pred.boxes:
                     predicted_classes.append(box.cls.item())
 
-        # Leer las clases esperadas desde el archivo correspondiente
-        expected_output_path = img_path.replace(".jpg", ".txt")
-        if os.path.exists(expected_output_path):
+        # Cambiar la extensión de .jpg a .txt usando with_suffix
+        expected_output_path = Path(img_path).with_suffix(".txt")  # Cambia .jpg a .txt
+
+        if expected_output_path.exists():
             with open(expected_output_path, 'r') as file:
                 expected_output = file.read().strip()
 
-                # Obtener todas las clases esperadas del archivo (suponiendo que el archivo tiene una clase por línea)
+                # Obtener todas las clases esperadas del archivo
                 expected_classes = [float(line.split()[0]) for line in expected_output.splitlines()]
 
                 print(f"Image: {img_path}")

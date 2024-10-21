@@ -1,0 +1,15 @@
+prepare:
+  names:
+    0: prohibitory
+    1: danger
+    2: mandatory
+    3: other
+  nc: 4
+  train: train_images.txt
+  test: test_images.txt
+  test_size: 0.2
+  random_state: 42
+train:
+  epochs: 1
+  batch_size: 16
+  learning_rate: 0.001

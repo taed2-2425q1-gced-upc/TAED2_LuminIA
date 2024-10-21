@@ -1,0 +1,8 @@
+names:
+  0: prohibitory
+  1: danger
+  2: mandatory
+  3: other
+nc: 4
+train: C:\Users\laia2\Desktop\TAED2\TAED2_LuminIA\data\processed\train_images.txt
+val: C:\Users\laia2\Desktop\TAED2\TAED2_LuminIA\data\processed\test_images.txt
