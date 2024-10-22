@@ -26,7 +26,7 @@ stages:
     - train.batch_size
     - train.learning_rate
     outs:
-    - models/ts_model.pt
+    - models/best.pt
 
   evaluate:
     cmd: python -m src.models.evaluate
