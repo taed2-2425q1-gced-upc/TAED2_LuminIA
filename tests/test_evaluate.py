@@ -80,24 +80,41 @@ def test_save_yaml_file(tmp_path):
 @patch('src.models.evaluate.YOLO')
 def test_evaluate_model(mock_yolo):
     """Test to evaluate the model and verify the returned metrics."""
-    
+
+    # Create mock parameters
+    prepare_params = {
+        "names": {0: "stop_sign", 1: "traffic_light", 2: "pedestrian", 3: "bicycle"},
+        "nc": 4,
+        "random_state": 42
+    }
+
     class MockBox:
         def __init__(self):
-            self.map50 = 0.5
-            self.map = 0.4
-            self.mp = 0.6
-            self.mr = 0.7
+            self.maps = [0.5, 0.4, 0.6, 0.7]  # Example mAP values for each class
 
     class MockValResult:
         def __init__(self):
+            self.results_dict = {
+                'metrics/mAP50(B)': 0.75,
+                'metrics/mAP50-95(B)': 0.65,
+                'metrics/precision(B)': 0.8,
+                'metrics/recall(B)': 0.9
+            }
             self.box = MockBox()
 
     mock_instance = mock_yolo.return_value
     mock_instance.val.return_value = MockValResult()  
     
-    metrics = evaluate_model()
+    # Call the function with the prepare_params
+    metrics_dict, class_mAPs = evaluate_model(prepare_params)
     
-    assert metrics["mAP50B"] == 0.5, "The mAP at 50 is not as expected"
-    assert metrics["mAP50-95B"] == 0.4, "The mAP between 50 and 95 is not as expected"
-    assert metrics["precisionB"] == 0.6, "The precision is not as expected"
-    assert metrics["recallB"] == 0.7, "The recall is not as expected"
+    assert metrics_dict["mAP50B"] == 0.75, "The mAP at 50 is not as expected"
+    assert metrics_dict["mAP50-95B"] == 0.65, "The mAP between 50 and 95 is not as expected"
+    assert metrics_dict["precisionB"] == 0.8, "The precision is not as expected"
+    assert metrics_dict["recallB"] == 0.9, "The recall is not as expected"
+    
+    # Verify class-wise mAP values
+    assert class_mAPs["stop_sign"]["mAP50-95"] == 0.5, "Class 'stop_sign' mAP50-95 is not as expected"
+    assert class_mAPs["traffic_light"]["mAP50-95"] == 0.4, "Class 'traffic_light' mAP50-95 is not as expected"
+    assert class_mAPs["pedestrian"]["mAP50-95"] == 0.6, "Class 'pedestrian' mAP50-95 is not as expected"
+    assert class_mAPs["bicycle"]["mAP50-95"] == 0.7, "Class 'bicycle' mAP50-95 is not as expected"

@@ -4,5 +4,5 @@ names:
   2: class2
   3: class3
 nc: 4
-train: train_images.txt
-val: test_images.txt
+train: train_images_path
+val: test_images_path

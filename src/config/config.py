@@ -12,7 +12,7 @@ logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
 
 DATA_DIR = PROJ_ROOT / "data"
 CONFIG_PATH = PROJ_ROOT/ "src" / "config" / "yolov3_ts_train.cfg"
-WEIGHTS_PATH = PROJ_ROOT/ "src" / "models" / "ts_model.pt"
+WEIGHTS_PATH = PROJ_ROOT/ "src" / "models" / "best.pt"
 RAW_DATA_DIR = DATA_DIR / "raw"
 RAW_DATA_DIR_TS = RAW_DATA_DIR / "ts"
 INTERIM_DATA_DIR = DATA_DIR / "interim"
@@ -32,6 +32,8 @@ TRAIN_IMAGES_PATH = PROCESSED_DATA_DIR / "train_images.txt"
 TEST_IMAGES_PATH = PROCESSED_DATA_DIR / "test_images.txt"
 
 SETTINGS_PATH = PROJ_ROOT / "settings.json"
+
+YAML_FILE = PROJ_ROOT/ "dataset.yaml"
 
 
 # If tqdm is installed, configure loguru with tqdm.write

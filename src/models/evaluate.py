@@ -7,12 +7,12 @@ import json
 from ultralytics import YOLO
 
 from src.config.config import (
-    METRICS_DIR, 
-    PROCESSED_DATA_DIR, 
-    MODELS_DIR, 
-    TRAIN_IMAGES_PATH, 
-    TEST_IMAGES_PATH, 
-    PARAMS_PATH, 
+    METRICS_DIR,
+    PROCESSED_DATA_DIR,
+    MODELS_DIR,
+    TRAIN_IMAGES_PATH,
+    TEST_IMAGES_PATH,
+    PARAMS_PATH,
     YAML_FILE,
     WEIGHTS_PATH,
 )
@@ -26,7 +26,6 @@ def load_params():
         except yaml.YAMLError as exc:
             print(exc)
             return None
-
 
 def create_data_dict(prepare_params):
     """Create a data dictionary for YOLO from prepare parameters."""
@@ -51,21 +50,28 @@ def save_yaml_file(data):
 # MODEL EVALUATION #
 # ================ #
 
-def evaluate_model():
+def evaluate_model(prepare_params):
     """Evaluate the model and return the metrics."""
     ts_model = YOLO(WEIGHTS_PATH)
     metrics = ts_model.val(data=YAML_FILE)
 
-    # Extraer las métricas usando los atributos correctos (sin paréntesis)
+    # Extract overall metrics
+    class_names = list(prepare_params["names"].values())
     metrics_dict = {
-        "mAP50B": metrics.box.map50,       # mAP at IoU 50 for bounding boxes
-        "mAP50-95B": metrics.box.map,      # mAP at IoU 50-95 for bounding boxes
-        "precisionB": metrics.box.mp,      # Mean precision for bounding boxes (sin paréntesis)
-        "recallB": metrics.box.mr          # Mean recall for bounding boxes (sin paréntesis)
+        "mAP50B": metrics.results_dict['metrics/mAP50(B)'],
+        "mAP50-95B": metrics.results_dict['metrics/mAP50-95(B)'],
+        "precisionB": metrics.results_dict['metrics/precision(B)'],
+        "recallB": metrics.results_dict['metrics/recall(B)']
     }
 
-    return metrics_dict
-
+    # Extract mAP for each class using YOLOv8 output format
+    class_mAPs = {}
+    for idx, class_name in enumerate(class_names):
+        class_mAPs[class_name] = {
+            "mAP50-95": metrics.box.maps[idx]
+        }
+        
+    return metrics_dict, class_mAPs
 
 def main():
     """Main evaluation function."""
@@ -93,17 +99,27 @@ def main():
         random.seed(prepare_params["random_state"])
 
         # Evaluate the model
-        metrics_dict = evaluate_model()
+        metrics_dict, class_mAPs = evaluate_model(prepare_params)
 
-        # Log metrics to MLflow
+
+        # Log overall metrics to MLflow
         mlflow.log_metrics(metrics_dict)
+
+        # Log class-wise mAP to MLflow
+        for class_name, mAPs in class_mAPs.items():
+            mlflow.log_metric(f"class_{class_name}_mAP50-95", mAPs["mAP50-95"])
+
+        # Merge overall metrics and class-wise mAPs into a single dictionary
+        merged_metrics = {
+            "overall_metrics": metrics_dict,
+            "class_wise_mAPs": class_mAPs
+        }
 
         # Save evaluation metrics to a JSON file
         with open(METRICS_DIR / "scores.json", "w") as scores_file:
-            json.dump(metrics_dict, scores_file, indent=4)
+            json.dump(merged_metrics, scores_file, indent=4)
 
         print("Evaluation completed.")
-
 
 if __name__ == "__main__":
     main()

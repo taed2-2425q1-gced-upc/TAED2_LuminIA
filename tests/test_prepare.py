@@ -12,96 +12,108 @@ from src.features.prepare import (
 from src.config.config import PROCESSED_DATA_DIR
 
 
+def write_file_list(file_list, output_file):
+    """Write the list of files to an output file."""
+    with open(output_file, 'w') as f:
+        for file in file_list:
+            f.write(f"{file}\n")  
+
+
 def test_load_parameters():
-    """Test para cargar los parámetros correctamente."""
+    """Test to load parameters correctly."""
     params = load_parameters()
-    assert "test_size" in params, "Falta el parámetro 'test_size'"
-    assert params["test_size"] == 0.2, "El tamaño de prueba no es el esperado"
-    assert "train" in params, "Falta el parámetro 'train'"
-    assert "test" in params, "Falta el parámetro 'test'"
+    assert "test_size" in params, "Missing 'test_size' parameter"
+    assert params["test_size"] == 0.2, "Test size is not as expected"
+    assert "train" in params, "Missing 'train' parameter"
+    assert "test" in params, "Missing 'test' parameter"
+
 
 def test_load_parameters_with_invalid_yaml():
-    """Test para cargar parámetros desde un archivo YAML inválido."""
-    # Simula un archivo YAML malformado
+    """Test to load parameters from an invalid YAML file."""
+    # Simulate a malformed YAML file
     mock_file = mock_open(read_data="invalid_yaml: [")
     
     with patch("builtins.open", mock_file):
         params = load_parameters()
         
-        # Verifica que se devuelva un diccionario vacío en caso de error
-        assert params == {}, "Se esperaba un diccionario vacío al cargar un YAML inválido"
+        # Verify that an empty dictionary is returned in case of an error
+        assert params == {}, "Expected an empty dictionary when loading an invalid YAML"
+
 
 def test_get_image_files(tmp_path):
-    """Test para la obtención de archivos de imagen del directorio."""
+    """Test for obtaining image files from the directory."""
     
-    # Crea un directorio temporal y añade algunos archivos de imagen
+    # Create a temporary directory and add some image files
     mock_image_dir = tmp_path / "data" / "raw"
     mock_image_dir.mkdir(parents=True, exist_ok=True)
 
-    # Crea 3 archivos de imagen de prueba
-    expected_images = {f"{i:05}.jpg" for i in range(3)}  # Nombres esperados
+    # Create 3 test image files
+    expected_images = {f"{i:05}.jpg" for i in range(3)}  # Expected names
     for i in range(3):
         mock_image_file = mock_image_dir / f"{i:05}.jpg"
-        mock_image_file.touch()  # Crea un archivo vacío
+        mock_image_file.touch()  # Create an empty file
 
-    # Crea un archivo que no es una imagen
+    # Create a file that is not an image
     non_image_file = mock_image_dir / "not_an_image.txt"
-    non_image_file.touch()  # Crea un archivo de texto
+    non_image_file.touch()  # Create a text file
 
-    # Parchea la variable RAW_DATA_DIR_TS para que apunte al directorio temporal
+    # Patch the RAW_DATA_DIR_TS variable to point to the temporary directory
     with patch("src.config.config.RAW_DATA_DIR_TS", mock_image_dir):
         images = get_image_files()
 
-        # Verifica que todos los archivos devueltos son imágenes .jpg
-        assert all(img.endswith('.jpg') for img in images), "No todos los archivos devueltos son imágenes .jpg"
+        # Verify that all returned files are .jpg images
+        assert all(img.endswith('.jpg') for img in images), "Not all returned files are .jpg images"
         
-        # Verifica que no se devuelvan archivos no deseados (por ejemplo, el archivo de texto)
-        assert "not_an_image.txt" not in images, "Se ha devuelto un archivo que no es una imagen .jpg"
+        # Verify that non-image files are not returned (e.g., the text file)
+        assert "not_an_image.txt" not in images, "A non-image file was returned."
 
-        # Verifica que las imágenes esperadas están en los resultados devueltos
+        # Verify that the expected images are in the returned results
         for expected in expected_images:
-            assert expected in images, f"{expected} no se ha encontrado en la lista de imágenes devueltas."
+            assert expected in images, f"{expected} was not found in the list of returned images."
 
 
 def test_split_data():
-    """Test para dividir los archivos de imagen en conjuntos de entrenamiento y prueba."""
+    """Test to split the image files into training and test sets."""
     image_files = ["image1.jpg", "image2.jpg", "image3.jpg"]
     params = {"test_size": 0.2, "random_state": 42}
     train_files, test_files = split_data(image_files, params)
 
-    assert len(train_files) == 2, "Se esperaba que el conjunto de entrenamiento tuviera 2 archivos"
-    assert len(test_files) == 1, "Se esperaba que el conjunto de prueba tuviera 1 archivo"
+    assert len(train_files) == 2, "Expected the training set to have 2 files"
+    assert len(test_files) == 1, "Expected the test set to have 1 file"
+
 
 def test_write_file_list(tmp_path):
-    """Test para escribir la lista de archivos en un archivo de salida."""
-    file_list = ["image1.jpg", "image2.jpg"]
+    """Test to write the list of files to an output file."""
+    file_list = ["image1.jpg", "image2.jpg"]  # Simple names
     output_file = tmp_path / "output.txt"
 
     write_file_list(file_list, output_file)
 
-    # Verifica que el archivo se haya creado y contenga el contenido esperado
+    # Verify that the file was created and contains the expected content
     with open(output_file, 'r') as f:
         lines = f.readlines()
-        assert len(lines) == 2, "El número de líneas en el archivo de salida no es el esperado"
-        assert lines[0].strip() == "image1.jpg", "La primera línea no es la esperada"
-        assert lines[1].strip() == "image2.jpg", "La segunda línea no es la esperada"
+        print("File content:", [line.strip() for line in lines])  # For debugging
+        assert len(lines) == 2, "The number of lines in the output file is not as expected"
+        assert lines[0].strip() == "image1.jpg", "The first line is not as expected"
+        assert lines[1].strip() == "image2.jpg", "The second line is not as expected"
+
 
 def test_prepare_data(mocker):
-    """Test para preparar los datos."""
-    # Simula la llamada a `load_parameters`
+    """Test to prepare the data."""
+    # Mock the call to `load_parameters`
     mocker.patch('src.features.prepare.load_parameters', return_value={
         "test_size": 0.2,
         "random_state": 42,
-        "train": "train_images.txt",  # Debe coincidir con el nombre correcto
-        "test": "test_images.txt"      # Debe coincidir con el nombre correcto
+        "train": "train_images.txt",  # Must match the correct name
+        "test": "test_images.txt"      # Must match the correct name
     })
 
-    # Simula la llamada a `get_image_files`
+    # Mock the call to `get_image_files`
     mocker.patch('src.features.prepare.get_image_files', return_value=["image1.jpg", "image2.jpg", "image3.jpg"])
 
-    # Ejecuta la función que estamos probando
+    # Execute the function we are testing
     prepare_data()
 
-    # Verifica que los archivos de salida se hayan creado
-    assert os.path.exists(PROCESSED_DATA_DIR / "train_images.txt"), "El archivo de entrenamiento no se ha creado"
-    assert os.path.exists(PROCESSED_DATA_DIR / "test_images.txt"), "El archivo de prueba no se ha creado"
+    # Verify that the output files were created
+    assert os.path.exists(PROCESSED_DATA_DIR / "train_images.txt"), "The training file was not created"
+    assert os.path.exists(PROCESSED_DATA_DIR / "test_images.txt"), "The test file was not created"
