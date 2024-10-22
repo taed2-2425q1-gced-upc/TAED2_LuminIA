@@ -65,7 +65,7 @@ with mlflow.start_run():
     # Perform validation and save the evaluation metrics in runs directory
     metrics = ts_model.val(data=yaml_file)
 
-    # Create a dictionary to hold the metrics to log
+    # Create a dictionary to hold the general metrics to log
     metrics_dict = {
         "mAP50B": metrics.results_dict['metrics/mAP50(B)'],   
         "mAP50-95B": metrics.results_dict['metrics/mAP50-95(B)'],    
@@ -73,11 +73,28 @@ with mlflow.start_run():
         "recallB": metrics.results_dict['metrics/recall(B)']       
     }
 
-    # Log metrics to MLflow
+    # Extract mAP for each class using YOLOv8 output format
+    class_mAPs = {}
+    for idx, class_name in enumerate(class_names):
+        class_mAPs[class_name] = {
+            "mAP50-95": metrics.box.maps[idx] 
+        }
+
+    # Log overall metrics to MLflow
     mlflow.log_metrics(metrics_dict)
 
-    # Save the evaluation metrics to a JSON file
+    # Log class-wise mAP to MLflow
+    for class_name, mAPs in class_mAPs.items():
+        mlflow.log_metric(f"class_{class_name}_mAP50-95", mAPs["mAP50-95"])
+
+    # Merge overall metrics and class-wise mAPs into a single dictionary
+    merged_metrics = {
+        "overall_metrics": metrics_dict,
+        "class_wise_mAPs": class_mAPs
+    }
+
+    # Save the merged metrics to a JSON file
     with open(metrics_folder_path / "scores.json", "w") as scores_file:
-        json.dump(metrics_dict, scores_file, indent=4)
+        json.dump(merged_metrics, scores_file, indent=4)
 
     print("Evaluation completed.")
