@@ -12,7 +12,7 @@ logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
 
 DATA_DIR = PROJ_ROOT / "data"
 CONFIG_PATH = PROJ_ROOT/ "src" / "config" / "yolov3_ts_train.cfg"
-WEIGHTS_PATH = PROJ_ROOT/ "src" / "models" / "best.pt"
+WEIGHTS_PATH = PROJ_ROOT/ "src" / "models" / "ts_model.pt"
 RAW_DATA_DIR = DATA_DIR / "raw"
 RAW_DATA_DIR_TS = RAW_DATA_DIR / "ts"
 INTERIM_DATA_DIR = DATA_DIR / "interim"

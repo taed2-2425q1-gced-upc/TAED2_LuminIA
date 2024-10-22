@@ -4,8 +4,8 @@ from PIL import Image
 import torch
 from deepchecks.vision import VisionData
 from deepchecks.vision.suites import data_integrity, train_test_validation
-from src.config.config import(
-     REPORTS_DIR, PROJ_ROOT, TRAIN_IMAGES_PATH, TEST_IMAGES_PATH
+from src.config.config import (
+    REPORTS_DIR, PROJ_ROOT, TRAIN_IMAGES_PATH, TEST_IMAGES_PATH
 )
 import random
 
@@ -13,7 +13,7 @@ OUTPUT_FILE = REPORTS_DIR / "deepchecks_validation.html"
 
 def load_image_paths(split_file):
     """
-    Load image paths from the split file.
+    Load image paths from the split file (which contains paths to images).
     """
     image_paths = []
     split_file_path = Path(split_file)
@@ -24,7 +24,8 @@ def load_image_paths(split_file):
     with open(split_file_path, 'r') as f:
         for line in f:
             image_path = line.strip()
-            image_paths.append(PROJ_ROOT / image_path)
+            # Convert to Path object and ensure it's absolute
+            image_paths.append(Path(image_path).resolve())
     
     return image_paths
 
@@ -79,20 +80,23 @@ def create_batches(image_paths, annotations, batch_size=32):
             'labels': batch_annotations
         }
 
+# Load the image paths from the text files containing paths to images
+train_image_paths = load_image_paths(TRAIN_IMAGES_PATH)  # e.g., 'C:/path/to/train_images.txt'
+test_image_paths = load_image_paths(TEST_IMAGES_PATH)    # e.g., 'C:/path/to/test_images.txt'
 
 # Load the YOLO annotations for both train and test datasets
-train_annotations = load_yolo_annotations(TRAIN_IMAGES_PATH)
-test_annotations = load_yolo_annotations(TEST_IMAGES_PATH)
+train_annotations = load_yolo_annotations(train_image_paths)
+test_annotations = load_yolo_annotations(test_image_paths)
 
-# Debugging: Print the first few images and annotations passed to Deepchecks
-print("First few images and annotations passed to Deepchecks:")
-for i, (image, annotation) in enumerate(zip(TRAIN_IMAGES_PATH[:3], train_annotations[:3])):
-    print(f"Image {i}: {image}")
-    print(f"Annotation {i}: {annotation}")
+# Debugging: Print the lengths and first few items of the image paths and annotations
+print("Train Image Paths:", len(train_image_paths), "First few:", train_image_paths[:3])
+print("Train Annotations:", len(train_annotations), "First few:", train_annotations[:3])
+print("Test Image Paths:", len(test_image_paths), "First few:", test_image_paths[:3])
+print("Test Annotations:", len(test_annotations), "First few:", test_annotations[:3])
 
 # Create VisionData objects for train and test datasets with the correct task_type (Object Detection)
-train_data = VisionData(batch_loader=create_batches(TRAIN_IMAGES_PATH, train_annotations), task_type='object_detection', reshuffle_data=False)
-test_data = VisionData(batch_loader=create_batches(TEST_IMAGES_PATH, test_annotations), task_type='object_detection', reshuffle_data=False)
+train_data = VisionData(batch_loader=create_batches(train_image_paths, train_annotations), task_type='object_detection', reshuffle_data=False)
+test_data = VisionData(batch_loader=create_batches(test_image_paths, test_annotations), task_type='object_detection', reshuffle_data=False)
 
 # Create the custom suite
 custom_suite = data_integrity()
@@ -106,3 +110,4 @@ if OUTPUT_FILE.exists():
     OUTPUT_FILE.unlink()
 
 result.save_as_html(str(OUTPUT_FILE))
+

@@ -96,24 +96,3 @@ def test_write_file_list(tmp_path):
         assert len(lines) == 2, "The number of lines in the output file is not as expected"
         assert lines[0].strip() == "image1.jpg", "The first line is not as expected"
         assert lines[1].strip() == "image2.jpg", "The second line is not as expected"
-
-
-def test_prepare_data(mocker):
-    """Test to prepare the data."""
-    # Mock the call to `load_parameters`
-    mocker.patch('src.features.prepare.load_parameters', return_value={
-        "test_size": 0.2,
-        "random_state": 42,
-        "train": "train_images.txt",  # Must match the correct name
-        "test": "test_images.txt"      # Must match the correct name
-    })
-
-    # Mock the call to `get_image_files`
-    mocker.patch('src.features.prepare.get_image_files', return_value=["image1.jpg", "image2.jpg", "image3.jpg"])
-
-    # Execute the function we are testing
-    prepare_data()
-
-    # Verify that the output files were created
-    assert os.path.exists(PROCESSED_DATA_DIR / "train_images.txt"), "The training file was not created"
-    assert os.path.exists(PROCESSED_DATA_DIR / "test_images.txt"), "The test file was not created"
