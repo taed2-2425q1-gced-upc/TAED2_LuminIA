@@ -1,24 +1,20 @@
 """Main script: it includes our API initialization and endpoints."""
-from fastapi.responses import JSONResponse,  FileResponse
-import logging
-import torch
-from ultralytics.nn.tasks import DetectionModel
-from ultralytics import YOLO
-from contextlib import asynccontextmanager
-from http import HTTPStatus
-from typing import Dict, Union
-from PIL import Image
 import io
-from codecarbon import track_emissions
-from fastapi import File, FastAPI, HTTPException, UploadFile
-import numpy as np
-from pathlib import Path
+import logging
 import os
 import shutil 
-
-from src.config import METRICS_DIR, MODELS_DIR
+import torch
+from codecarbon import track_emissions
+from contextlib import asynccontextmanager
+from fastapi import File, FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.responses import FileResponse
+from http import HTTPStatus
+from pathlib import Path
+from PIL import Image
+from src.config import MODELS_DIR
+from ultralytics.nn.tasks import DetectionModel
+from ultralytics import YOLO
 
 logging.basicConfig(level=logging.INFO)
 torch.serialization.add_safe_globals([DetectionModel])
@@ -60,7 +56,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001"], 
+    allow_origins=["http://localhost:3000"], 
     allow_credentials=True,
     allow_methods=["*"], 
     allow_headers=["*"], 
@@ -149,6 +145,6 @@ async def _predict_image(file: UploadFile = File(...)):
             os.remove(temp_image_path)
 
 
-@app.get("/message")
+@app.get("/message", tags=["Prediction"])
 async def get_message():
     return {"message": "Traffic Signs Detection"}
