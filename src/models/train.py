@@ -1,29 +1,27 @@
-from pathlib import Path
-import numpy as np
+"""Train a YOLO model for traffic signs detection."""
+
 import random
+import json
+import shutil
+import numpy as np
 import mlflow
 import pandas as pd
 import yaml
 from codecarbon import EmissionsTracker
 from ultralytics import YOLO
-import json
-import shutil
-import torch 
 
-from src.config.config import PROJ_ROOT, METRICS_DIR, MODELS_DIR, PROCESSED_DATA_DIR, DATA_DIR, TRAIN_IMAGES_PATH, TEST_IMAGES_PATH, SETTINGS_PATH, PARAMS_PATH
-
-import json
-
+from src.config.config import (PROJ_ROOT, METRICS_DIR, MODELS_DIR,
+                                TRAIN_IMAGES_PATH, TEST_IMAGES_PATH,
+                                SETTINGS_PATH, PARAMS_PATH)
 
 def update_datasets_dir(file_path, new_datasets_dir):
     """Update the datasets directory in the JSON configuration."""
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf8') as file:
         data = json.load(file)
     data['datasets_dir'] = new_datasets_dir
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf8') as file:
         json.dump(data, file, indent=4)
-    print("El archivo JSON ha sido actualizado.")
-
+    print("The JSON file has been updated.")
 
 def read_params(params_path):
     """Read parameters from a YAML file."""
@@ -35,49 +33,35 @@ def read_params(params_path):
             print(exc)
             return None, None
 
-
-
-with mlflow.start_run():
-    # Path of the parameters file
-    params_path = PARAMS_PATH
-    # Read parameters
-    with open(PARAMS_PATH, "r", encoding="utf8") as params_file:
-        try:
-            params = yaml.safe_load(params_file)
-            prepare_params = params["prepare"]  
-            train_params = params["train"]
-        except yaml.YAMLError as exc:
-            print(exc)
-    
 def create_data_dict(prepare_params):
     """Create the data dictionary for training."""
     class_names = list(prepare_params["names"].values())
     nc = prepare_params["nc"]
-    
+
     return {
-        'train': str(TRAIN_IMAGES_PATH), 
-        'val': str(TEST_IMAGES_PATH), 
+        'train': str(TRAIN_IMAGES_PATH),
+        'val': str(TEST_IMAGES_PATH),
         'nc': nc,
-        'names': {i: name for i, name in enumerate(class_names)} 
+        'names': dict(enumerate(class_names))
     }
 
-
-def save_yaml(data, yaml_file):
+def save_yaml(data, yaml_file_path):
     """Save the data dictionary as a YAML file."""
-    with open(yaml_file, 'w') as file:
+    with open(yaml_file_path, 'w', encoding='utf8') as file:
         yaml.dump(data, file, default_flow_style=False)
 
 # ============== #
 # MODEL TRAINING #
 # ============== #
 
-def train_model(data_dict, train_params):
+def train_model(yaml_file_path, train_params):
     """Train the YOLO model."""
     # Set the random state for reproducibility
+    prepare_params, _ = read_params(PARAMS_PATH)
     np.random.seed(prepare_params["random_state"])
-    random.seed(prepare_params["random_state"]) 
+    random.seed(prepare_params["random_state"])
 
-    ts_model = YOLO("yolov8m.yaml")  
+    ts_model = YOLO("yolov8m.yaml")
     emissions_output_folder = METRICS_DIR
 
     with EmissionsTracker(
@@ -89,10 +73,11 @@ def train_model(data_dict, train_params):
         on_csv_write="append",
         default_cpu_power=45,
     ):
-        ts_model.train(data=data_dict, 
+        ts_model.train(data=yaml_file_path,  # Pass the YAML file path instead of the dict
                        epochs=train_params["epochs"])
 
     return emissions_output_folder
+
 
 def log_emissions_to_mlflow(emissions_output_folder):
     """Log CO2 emissions to MLflow."""
@@ -103,43 +88,30 @@ def log_emissions_to_mlflow(emissions_output_folder):
     mlflow.log_params(emissions_params)
     mlflow.log_metrics(emissions_metrics)
 
-
 def save_model_to_directory():
     """Save the trained model to the models directory."""
-    # Define la ruta de train_runs_path usando PROJ_ROOT
     train_runs_path = PROJ_ROOT / "runs" / "detect"
-    # Verifica que el directorio existe
     if not train_runs_path.exists():
-        print(f"Error: El directorio {train_runs_path} no existe.")
+        print(f"Error: The directory {train_runs_path} does not exist.")
         return
-    # Obtiene las carpetas de experimentos ordenadas por fecha de modificación
     exp_folders = sorted(train_runs_path.glob("train*"), key=lambda p: p.stat().st_mtime)
-    # Verifica si hay carpetas de experimentos disponibles
     if not exp_folders:
-        print("No se encontraron carpetas de experimentos en el directorio.")
+        print("No experiment folders found in the directory.")
         return
-    # Toma la carpeta más reciente
     latest_exp_folder = exp_folders[-1]
-    # Define la ruta del modelo a copiar
     default_model_path = latest_exp_folder / "weights/best.pt"
-    # Verifica si el modelo por defecto existe
     if not default_model_path.exists():
-        print(f"Error: El modelo {default_model_path} no existe.")
+        print(f"Error: The model {default_model_path} does not exist.")
         return
-    # Define la ruta donde se guardará el modelo
     model_save_path = MODELS_DIR / "ts_model.pt"
-    # Copia el modelo al directorio de modelos
     shutil.copy(default_model_path, model_save_path)
     print(f"Model from {default_model_path} copied to {model_save_path}")
 
-
-
-
 def print_exp_folders():
     """Print the list of experiment folders."""
-    train_runs_path = PROJ_ROOT / "runs" / "detect"  # Cambia esta línea según tu estructura de directorios
+    train_runs_path = PROJ_ROOT / "runs" / "detect"
     exp_folders = sorted(train_runs_path.glob("train*"), key=lambda p: p.stat().st_mtime)
-    
+
     if exp_folders:
         print("Experiment folders:")
         for folder in exp_folders:
@@ -148,40 +120,31 @@ def print_exp_folders():
         print("No experiment folders found matching 'train*'.")
 
     latest_exp_folder = exp_folders[-1]
-    print("last folder") 
+    print("Last folder:")
     print(latest_exp_folder)
 
+# Update datasets directory in the JSON file
+update_datasets_dir(SETTINGS_PATH, str(PROJ_ROOT))
 
+mlflow.set_experiment("traffic-signs")
+mlflow.sklearn.autolog(log_model_signatures=False, log_datasets=False)
 
-def main():
+with mlflow.start_run():
+    # Read parameters from the config
+    prepare_params_outer, train_params_outer = read_params(PARAMS_PATH)
 
-    # Update datasets directory in the JSON file
-    update_datasets_dir(SETTINGS_PATH, str(PROJ_ROOT))
+    # Create data dictionary
+    data_dict_outer = create_data_dict(prepare_params_outer)
 
-    mlflow.set_experiment("traffic-signs")
-    mlflow.sklearn.autolog(log_model_signatures=False, log_datasets=False)
+    # Save the data dictionary as a YAML file
+    YAML_FILE_PATH = 'dataset.yaml'
+    save_yaml(data_dict_outer, YAML_FILE_PATH)
 
-    with mlflow.start_run():
-        # Read parameters from the config
-        prepare_params, train_params = read_params(PARAMS_PATH)
-        if prepare_params is None or train_params is None:
-            return  # Exit if params cannot be read
+    # Train the model and track emissions
+    emissions_output_folder_outer = train_model(YAML_FILE_PATH, train_params_outer)
 
-        # Create data dictionary
-        data_dict = create_data_dict(prepare_params)
+    # Log emissions to MLflow
+    log_emissions_to_mlflow(emissions_output_folder_outer)
 
-        # Save the data dictionary as a YAML file
-        yaml_file = 'dataset.yaml'
-        save_yaml(data_dict, yaml_file)
-
-        # Train the model and track emissions
-        emissions_output_folder = train_model(yaml_file, train_params)
-
-        # Log emissions to MLflow
-        log_emissions_to_mlflow(emissions_output_folder)
-
-        # Save the model to the models directory
-        save_model_to_directory()
-    
-if __name__ == "__main__":
-    main()
+    # Save the model to the models directory
+    save_model_to_directory()

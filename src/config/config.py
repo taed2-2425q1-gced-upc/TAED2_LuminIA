@@ -1,3 +1,5 @@
+"""Config file with all the paths needed."""
+
 from pathlib import Path
 
 from dotenv import load_dotenv

@@ -1,10 +1,12 @@
+"""Test suite for functions in the src.models.train module."""
+
 import os
+import json
+from pathlib import Path
+from unittest.mock import patch
 import pytest
 import yaml
 import pandas as pd
-import json
-from unittest.mock import patch, mock_open
-from pathlib import Path
 from src.models.train import (
     update_datasets_dir,
     read_params,
@@ -36,7 +38,7 @@ def mock_yaml_file(tmp_path):
         }
     }
     yaml_file = tmp_path / "params.yaml"
-    with open(yaml_file, "w") as f:
+    with open(yaml_file, "w", encoding="utf-8") as f:
         yaml.dump(params, f)
     return yaml_file
 
@@ -48,7 +50,7 @@ def mock_json_file(tmp_path):
         "datasets_dir": "/old/path"
     }
     json_file = tmp_path / "settings.json"
-    with open(json_file, "w") as f:
+    with open(json_file, "w", encoding="utf-8") as f:
         json.dump(json_data, f)
     return json_file
 
@@ -58,9 +60,9 @@ def test_update_datasets_dir(mock_json_file):
     new_dir = "/new/path"
     update_datasets_dir(str(mock_json_file), new_dir)
 
-    with open(mock_json_file, 'r') as file:
+    with open(mock_json_file, 'r', encoding="utf-8") as file:
         data = json.load(file)
-    
+
     assert data['datasets_dir'] == new_dir, "The datasets directory was not updated correctly."
 
 
@@ -96,14 +98,14 @@ def test_save_yaml(tmp_path):
         'names': {0: 'class0', 1: 'class1', 2: 'class2', 3: 'class3'}
     }
     yaml_file = tmp_path / "output.yaml"
-    
+
     save_yaml(data, yaml_file)
 
     # Verify that the file was created
     assert yaml_file.exists(), "The YAML file was not created."
-    
+
     # Verify that the file content is as expected
-    with open(yaml_file, 'r') as file:
+    with open(yaml_file, 'r', encoding="utf-8") as file:
         content = yaml.safe_load(file)
         assert content == data, "The content of the YAML file is not as expected."
 
@@ -115,9 +117,10 @@ def test_train_model(mock_emissions_tracker, mock_yolo, mock_yaml_file):
     prepare_params, train_params = read_params(str(mock_yaml_file))
 
     mock_instance = mock_yolo.return_value
-    mock_instance.train.return_value = None  # Simulate that training does not return anything
+    mock_instance.train.return_value = None
 
-    emissions_output_folder = train_model(create_data_dict(prepare_params), train_params)
+    # Pass the mock_yaml_file path
+    emissions_output_folder = train_model(str(mock_yaml_file), train_params)
 
     assert mock_instance.train.called, "The train() method of the model was not called."
     assert emissions_output_folder == METRICS_DIR, "The emissions folder does not match."
@@ -139,7 +142,7 @@ def test_log_emissions_to_mlflow(mock_mlflow, mock_read_csv):
     assert mock_mlflow.log_metrics.called, "Log metrics in MLflow were not called."
 
 
-@patch('src.models.train.shutil.copy')
+@patch('shutil.copy')
 def test_save_model_to_directory(mock_copy):
     """Test to save the trained model to the models directory."""
     # Simulate the existence of the experiments folder
@@ -150,22 +153,22 @@ def test_save_model_to_directory(mock_copy):
     (train_runs_path / "train_1/weights/best.pt").touch()
 
     # Patch the glob function to simulate that there are experiment folders
-    with patch('src.models.train.Path.glob', return_value=[train_runs_path / "train_1"]):
+    with patch('pathlib.Path.glob', return_value=[train_runs_path / "train_1"]):
         save_model_to_directory()
 
     assert mock_copy.called, "The copy() function was not called to save the model."
 
 
-@patch('src.models.train.Path.glob')
+@patch('pathlib.Path.glob')
 def test_print_exp_folders(mock_glob, tmp_path):
     """Test to print the experiment folders."""
-    
+
     # Simulate the existence of experiment directories
     experiment_folder_1 = tmp_path / "runs/detect/train_1"
     experiment_folder_2 = tmp_path / "runs/detect/train_2"
     experiment_folder_1.mkdir(parents=True, exist_ok=True)
     experiment_folder_2.mkdir(parents=True, exist_ok=True)
-    
+
     # Make glob return these simulated folders
     mock_glob.return_value = [experiment_folder_1, experiment_folder_2]
 

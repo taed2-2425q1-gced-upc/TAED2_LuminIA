@@ -1,13 +1,13 @@
+"""Validate datasets for object detection tasks using Deepchecks."""
+
 from pathlib import Path
+import random  # Mover a la parte superior
 import numpy as np
 from PIL import Image
 import torch
 from deepchecks.vision import VisionData
 from deepchecks.vision.suites import data_integrity, train_test_validation
-from src.config.config import (
-    REPORTS_DIR, PROJ_ROOT, TRAIN_IMAGES_PATH, TEST_IMAGES_PATH
-)
-import random
+from src.config.config import REPORTS_DIR, TRAIN_IMAGES_PATH, TEST_IMAGES_PATH
 
 OUTPUT_FILE = REPORTS_DIR / "deepchecks_validation.html"
 
@@ -17,16 +17,16 @@ def load_image_paths(split_file):
     """
     image_paths = []
     split_file_path = Path(split_file)
-    
+
     if not split_file_path.exists():
         raise FileNotFoundError(f"Split file {split_file} does not exist.")
-    
-    with open(split_file_path, 'r') as f:
+
+    with open(split_file_path, 'r', encoding='utf-8') as f:
         for line in f:
             image_path = line.strip()
             # Convert to Path object and ensure it's absolute
             image_paths.append(Path(image_path).resolve())
-    
+
     return image_paths
 
 def load_yolo_annotations(image_paths):
@@ -37,11 +37,10 @@ def load_yolo_annotations(image_paths):
     for image_path in image_paths:
         annotation_file = image_path.with_suffix('.txt')
         if annotation_file.exists():
-            with open(annotation_file, 'r') as f:
+            with open(annotation_file, 'r', encoding='utf-8') as f:
                 boxes = []
                 for line in f:
                     # Each line contains class_id, x_center, y_center, width, height
-                    # Parse the line and convert YOLO format to Deepchecks format
                     class_id, x_center, y_center, width, height = map(float, line.strip().split())
                     img_width, img_height = Image.open(image_path).size
                     x_min = int((x_center - width / 2) * img_width)
@@ -71,7 +70,7 @@ def create_batches(image_paths, annotations, batch_size=32):
     combined = list(zip(image_paths, annotations))
     random.shuffle(combined)
     image_paths[:], annotations[:] = zip(*combined)
-    
+
     for i in range(0, len(image_paths), batch_size):
         batch_images = image_paths[i:i + batch_size]
         batch_annotations = annotations[i:i + batch_size]
@@ -81,8 +80,8 @@ def create_batches(image_paths, annotations, batch_size=32):
         }
 
 # Load the image paths from the text files containing paths to images
-train_image_paths = load_image_paths(TRAIN_IMAGES_PATH)  # e.g., 'C:/path/to/train_images.txt'
-test_image_paths = load_image_paths(TEST_IMAGES_PATH)    # e.g., 'C:/path/to/test_images.txt'
+train_image_paths = load_image_paths(TRAIN_IMAGES_PATH)
+test_image_paths = load_image_paths(TEST_IMAGES_PATH)
 
 # Load the YOLO annotations for both train and test datasets
 train_annotations = load_yolo_annotations(train_image_paths)
@@ -94,9 +93,18 @@ print("Train Annotations:", len(train_annotations), "First few:", train_annotati
 print("Test Image Paths:", len(test_image_paths), "First few:", test_image_paths[:3])
 print("Test Annotations:", len(test_annotations), "First few:", test_annotations[:3])
 
-# Create VisionData objects for train and test datasets with the correct task_type (Object Detection)
-train_data = VisionData(batch_loader=create_batches(train_image_paths, train_annotations), task_type='object_detection', reshuffle_data=False)
-test_data = VisionData(batch_loader=create_batches(test_image_paths, test_annotations), task_type='object_detection', reshuffle_data=False)
+# Create VisionData objects for train and test datasets
+train_data = VisionData(
+    batch_loader=create_batches(train_image_paths, train_annotations),
+    task_type='object_detection',
+    reshuffle_data=False
+)
+
+test_data = VisionData(
+    batch_loader=create_batches(test_image_paths, test_annotations),
+    task_type='object_detection',
+    reshuffle_data=False
+)
 
 # Create the custom suite
 custom_suite = data_integrity()
@@ -110,4 +118,3 @@ if OUTPUT_FILE.exists():
     OUTPUT_FILE.unlink()
 
 result.save_as_html(str(OUTPUT_FILE))
-
