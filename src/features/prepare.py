@@ -42,24 +42,20 @@ def write_file_list(file_list, output_path):
             full_path = f"{RAW_DATA_DIR_TS}/{item}"
             f.write(f"{full_path}\n")
 
-def prepare_data():
-    """Main function to prepare the data."""
-    # Load parameters
-    params = load_parameters()
 
-    # Get list of all image files
-    image_files = get_image_files()
+# Load parameters
+params = load_parameters()
 
-    # Split into training and validation sets
-    train_files, test_files = split_data(image_files, params)
+# Get list of all image files
+image_files = get_image_files()
 
-    # Define output files
-    train_image_list = PROCESSED_DATA_DIR / params["train"]
-    test_image_list = PROCESSED_DATA_DIR / params["test"]
+# Split into training and validation sets
+train_files, test_files = split_data(image_files, params)
 
-    # Write the split file lists to disk
-    write_file_list(train_files, train_image_list)
-    write_file_list(test_files, test_image_list)
+# Define output files
+train_image_list = PROCESSED_DATA_DIR / params["train"]
+test_image_list = PROCESSED_DATA_DIR / params["test"]
 
-if __name__ == "__main__":
-    prepare_data()
+# Write the split file lists to disk
+write_file_list(train_files, train_image_list)
+write_file_list(test_files, test_image_list)

@@ -67,7 +67,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.coverage.run]
-omit = ["src/prepare.py", "src/evaluate.py", "src/train.py", "src/train_api_demo_models.py"]
+omit = ["src/features/prepare.py", "src/models/evaluate.py", "src/models/train.py", "src/train_api_demo_models.py"]
 
 [tool.pytest.ini_options]
 pythonpath = "."
