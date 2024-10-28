@@ -1,8 +1,8 @@
 names:
-  0: prohibitory
-  1: danger
-  2: mandatory
-  3: other
+  0: class0
+  1: class1
+  2: class2
+  3: class3
 nc: 4
-train: /mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/train_images.txt
-val: /mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA/data/processed/test_images.txt
+train: train_images_path
+val: test_images_path
