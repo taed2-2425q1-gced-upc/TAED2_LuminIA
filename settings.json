@@ -1,6 +1,6 @@
 {
     "settings_version": "0.0.6",
-    "datasets_dir": "C:\\Users\\laia2\\Desktop\\TAED2\\TAED2_LuminIA",
+    "datasets_dir": "/mnt/c/Users/evaji/OneDrive/Documents/UNI/7/TAED2/LuminIA/TAED2_LuminIA",
     "weights_dir": "weights",
     "runs_dir": "runs",
     "uuid": "c3106bf1a7d38686f6aaecdaad674e5c14585e70bdb15af03a92b040be3cddc3",
