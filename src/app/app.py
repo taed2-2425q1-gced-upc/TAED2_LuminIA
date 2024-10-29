@@ -29,7 +29,7 @@ torch.serialization.add_safe_globals([DetectionModel])
 
 
 @asynccontextmanager
-async def lifespan():
+async def lifespan(app: FastAPI):
     """Loads the YOLO model found in `MODELS_DIR` and adds it to the global MODEL variable."""
     global MODEL
     model_paths = [

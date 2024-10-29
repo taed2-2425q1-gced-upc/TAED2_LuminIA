@@ -36,6 +36,8 @@ def split_data(image_files, params):
 
 def write_file_list(file_list, output_path):
     """Write a list of file paths to a specified output file."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
     with open(output_path, 'w', encoding='utf-8') as f:
         for item in file_list:
             # Concatenate the base path with the filename
