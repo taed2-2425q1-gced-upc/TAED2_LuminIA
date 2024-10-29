@@ -37,6 +37,8 @@ SETTINGS_PATH = PROJ_ROOT / "settings.json"
 
 YAML_FILE = PROJ_ROOT/ "dataset.yaml"
 
+MLFLOW_FILE = PROJ_ROOT/ "runs"
+
 
 # If tqdm is installed, configure loguru with tqdm.write
 # https://github.com/Delgan/loguru/issues/135
